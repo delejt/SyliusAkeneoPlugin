@@ -27,7 +27,7 @@ class TaxonAttributeValueType extends AbstractResourceType
         #[Autowire(TaxonAttributeValue::class)]
         string $dataClass,
         #[Autowire('%synolia_sylius_akeneo.form.type.taxon_attribute_value.validation_groups%')]
-        array $validationGroups,
+        array|string $validationGroups,
         #[Autowire(TaxonAttributeChoiceType::class)]
         protected string $attributeChoiceType,
         protected RepositoryInterface $taxonAttributeRepository,
@@ -36,7 +36,7 @@ class TaxonAttributeValueType extends AbstractResourceType
         #[Autowire('@sylius.form_registry.taxon_attribute_type')]
         protected FormTypeRegistryInterface $formTypeRegistry,
     ) {
-        parent::__construct($dataClass, $validationGroups);
+        parent::__construct($dataClass, (array) $validationGroups);
     }
 
     /** @inheritDoc */
