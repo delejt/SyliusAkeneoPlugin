@@ -11,16 +11,26 @@ final class Version20210224160400 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add family column in product group table.';
+        return 'Add family column in product group table (PostgreSQL).';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE akeneo_product_group ADD family VARCHAR(255) NOT NULL');
+        $this->abortIf(
+            'postgresql' !== $this->connection->getDatabasePlatform()->getName(),
+            'Migration can only be executed safely on postgresql.'
+        );
+
+        $this->addSql('ALTER TABLE akeneo_product_group ADD COLUMN family VARCHAR(255) NOT NULL;');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE akeneo_product_group DROP family');
+        $this->abortIf(
+            'postgresql' !== $this->connection->getDatabasePlatform()->getName(),
+            'Migration can only be executed safely on postgresql.'
+        );
+
+        $this->addSql('ALTER TABLE akeneo_product_group DROP COLUMN family;');
     }
 }
