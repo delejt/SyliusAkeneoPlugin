@@ -19,8 +19,8 @@ abstract class AbstractBatchTask implements AkeneoTaskInterface, BatchTaskInterf
     protected function getSelectStatement(PipelinePayloadInterface $payload): Statement
     {
         return $this->entityManager->getConnection()->prepare(sprintf(
-            'SELECT id, `values`
-             FROM `%s`
+            'SELECT id, values
+             FROM %s
              WHERE id IN (%s)
              ORDER BY id ASC',
             $payload->getTmpTableName(),
@@ -31,7 +31,7 @@ abstract class AbstractBatchTask implements AkeneoTaskInterface, BatchTaskInterf
     protected function removeEntry(PipelinePayloadInterface $payload, int $id): void
     {
         $query = $this->entityManager->getConnection()->prepare(sprintf(
-            'DELETE FROM `%s` WHERE id = :id',
+            'DELETE FROM %s WHERE id = :id',
             $payload->getTmpTableName(),
         ));
         $query->bindValue('id', $id, ParameterType::INTEGER);

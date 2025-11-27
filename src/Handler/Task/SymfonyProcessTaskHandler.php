@@ -243,10 +243,10 @@ class SymfonyProcessTaskHandler implements TaskHandlerInterface
         $this->tearDown($pipelinePayload);
 
         $query = sprintf(
-            'CREATE TABLE `%s` (
-              `id` INT NOT NULL AUTO_INCREMENT,
-              `values` JSON NULL,
-              PRIMARY KEY (`id`));',
+            'CREATE TABLE %s (
+              id SERIAL NOT NULL,
+              values JSON NULL,
+              PRIMARY KEY (id));',
             $pipelinePayload->getTmpTableName(),
         );
         $this->entityManager->getConnection()->executeStatement($query);
@@ -270,7 +270,7 @@ class SymfonyProcessTaskHandler implements TaskHandlerInterface
     {
         /** @var Result $query */
         $query = $this->entityManager->getConnection()->prepare(sprintf(
-            'SELECT count(id) FROM `%s`',
+            'SELECT count(id) FROM %s',
             $tableName,
         ))->executeQuery();
 
@@ -281,7 +281,7 @@ class SymfonyProcessTaskHandler implements TaskHandlerInterface
     {
         /** @var Result $query */
         $query = $this->entityManager->getConnection()->prepare(sprintf(
-            'SELECT id FROM `%s` ORDER BY id ASC LIMIT 1',
+            'SELECT id FROM %s ORDER BY id ASC LIMIT 1',
             $tableName,
         ))->executeQuery();
 
@@ -295,7 +295,7 @@ class SymfonyProcessTaskHandler implements TaskHandlerInterface
     ): Statement {
         $query = $this->entityManager->getConnection()->prepare(sprintf(
             'SELECT id
-             FROM `%s`
+             FROM %s
              WHERE id > :from
              ORDER BY id ASC
              LIMIT :limit',
