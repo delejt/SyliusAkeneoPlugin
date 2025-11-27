@@ -174,7 +174,7 @@ class SymfonyProcessTaskHandler implements TaskHandlerInterface
             foreach ($page->getItems() as $item) {
                 ++$count;
                 $sql = sprintf(
-                    'INSERT INTO `%s` (`values`) VALUES (:values);',
+                    'INSERT INTO %s (values) VALUES (:values);',
                     $payload->getTmpTableName(),
                 );
                 $stmt = $this->entityManager->getConnection()->prepare($sql);
@@ -208,7 +208,7 @@ class SymfonyProcessTaskHandler implements TaskHandlerInterface
             $this->akeneoLogger->debug('Processing item ' . ($item['identifier'] ?? $item['code']));
             ++$count;
             $sql = sprintf(
-                'INSERT INTO `%s` (`values`) VALUES (:values);',
+                'INSERT INTO %s (values) VALUES (:values);',
                 $payload->getTmpTableName(),
             );
             $stmt = $this->entityManager->getConnection()->prepare($sql);
